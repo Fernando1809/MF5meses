@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregunta</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Aquí se incluye el archivo de estilos -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+        .btn-custom {
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .btn-custom:hover {
+            background-color: #5a2a91;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 id="questionTitle">Pregunta</h2>
+        <p id="questionText">¿En qué día nos tomamos la siguiente fotografía?</p>
+        <img id="questionImage" src="archivos/Photo1.jpg" alt="Fotografía" class="img-fluid mb-3" style="max-width: 200px;">
+
+        <form id="questionForm">
+            <div id="optionsContainer" class="form-check">
+                <!-- Opciones se llenarán aquí por JavaScript -->
+            </div>
+            <button id="submitBtn" class="btn-custom mt-3">Siguiente</button>
+        </form>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: '¿Cuándo nos tomamos la siguiente foto?',
+                image: 'archivos/Photo2.jpg',
+                options: [
+                    { text: 'FLISOL', value: 'a' },
+                    { text: 'Sábado de novios', value: 'b' },
+                    { text: 'Cumpleaños de Miguel', value: 'c' }
+                ],
+                correctAnswer: 'b'
+            },
+            {
+                question: '¿Dónde nos tomamos la siguiente foto?',
+                image: 'archivos/Photo3.jpg',
+                options: [
+                    { text: 'Parque', value: 'a' },
+                    { text: 'Afogato', value: 'b' },
+                    { text: 'Cumpleaños de Miguel', value: 'c' }
+                ],
+                correctAnswer: 'c'
+            },
+            {
+                question: '¿En qué día nos tomamos la siguiente fotografía?',
+                image: 'archivos/Photo1.jpg',
+                options: [
+                    { text: '14 de febrero', value: 'a' },
+                    { text: '20 de marzo', value: 'b' },
+                    { text: '8 de mayo', value: 'c' }
+                ],
+                correctAnswer: 'b'
+            }
+        ];
+
+        function getRandomQuestion() {
+            return questions[Math.floor(Math.random() * questions.length)];
+        }
+
+        function renderQuestion() {
+            const { question, image, options, correctAnswer } = getRandomQuestion();
+
+            document.getElementById('questionTitle').textContent = 'Pregunta';
+            document.getElementById('questionText').textContent = question;
+            document.getElementById('questionImage').src = image;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = options.map(option => 
+                `<div class="form-check">
+                    <input class="form-check-input" type="radio" name="question" id="option${option.value}" value="${option.value}">
+                    <label class="form-check-label" for="option${option.value}">
+                        ${option.text}
+                    </label>
+                </div>`
+            ).join('');
+        }
+
+        document.getElementById('questionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const selectedOption = document.querySelector('input[name="question"]:checked');
+            if (selectedOption) {
+                const { correctAnswer } = getRandomQuestion();
+                if (selectedOption.value === correctAnswer) {
+                    alert('¡Respuesta correcta! y es una de nuestras favoritas');
+                    window.location.href = 'question2.html';
+                } else {
+                    alert('Respuesta incorrecta, intenta de nuevo.');
+                }
+            } else {
+                alert('Por favor, selecciona una opción.');
+            }
+        });
+
+        renderQuestion();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
